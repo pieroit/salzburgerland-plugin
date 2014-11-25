@@ -17,3 +17,6 @@ require_once( 'admin/saju_admin.php' );
 
 // Load the Jukebox module.
 require_once( 'modules/jukebox/saju_jukebox.php' );
+
+// Load shortcodes
+require_once( 'shortcodes/jukebox-wheel/salu_shortcode_jukebox_wheel.php' );

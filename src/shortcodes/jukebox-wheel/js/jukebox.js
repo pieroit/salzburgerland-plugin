@@ -1,3 +1,4 @@
+$ = jQuery;
 $(document).ready(function() {
 
     // Disable page bouncing
@@ -14,8 +15,9 @@ $(document).ready(function() {
         // Clear div contents
         $(selector).empty();
 
-        // Expand svg to parent size
-        $(selector).width('100%').height('100%');
+        // Expand svg to parent width and to be a square
+        $(selector).width('100%');
+        $(selector).height( $(selector).width() );
 
         // Get size in pixel
         var width = $(selector).width();
@@ -184,7 +186,7 @@ $(document).ready(function() {
         dates.push('');
     }
 
-    // Build initial wheel
+    // Build initial wheel   
     var data = dates;
     var date = new Date();
     $('#date-from-input').val(date.getDate());
