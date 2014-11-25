@@ -21,7 +21,7 @@ function saju_shortcode_jukebox_wheel( $atts ) {
     wp_enqueue_script( 'jukebox-wheel-functions', plugins_url( 'js/jukebox-functions.js', __FILE__ ) );
     wp_enqueue_script( 'jukebox-wheel', plugins_url( 'js/jukebox.js', __FILE__ ) );
    
-    // Write content 
+    // Write markup 
     ob_start();
     require_once 'saju_shortcode_jukebox_wheel_html_template.php';
     return ob_get_clean();
