@@ -193,6 +193,7 @@ $(document).ready(function() {
     // App logic variables
     var decidedFromDate = false;
     var decidedToDate = false;
+    updateInputFieldFocus();
 
     // Wheel data
     var interests = ['biking', 'nature', 'eating', 'climbing', 'snowing', 'dancing'];
@@ -210,23 +211,27 @@ $(document).ready(function() {
         data = interests;
         decidedFromDate = true;
         decidedToDate = true;
+        updateInputFieldFocus();
         buildWheel('#wheel');
     });
     Hammer($('#select-date-tab')[0]).on('tap', function() {
         data = dates;
         decidedFromDate = false;
         decidedToDate = false;
+        updateInputFieldFocus();
         buildWheel('#wheel');
     });
 
     Hammer($('#date-from-input')[0]).on('tap', function() {
         decidedFromDate = false;
         decidedToDate = false;
+        updateInputFieldFocus();
     });
     
     Hammer($('#date-to-input')[0]).on('tap', function() {
         decidedFromDate = true;
         decidedToDate = false;
+        updateInputFieldFocus();
     });
     
     // Final submission
@@ -246,6 +251,7 @@ $(document).ready(function() {
         } else if (!decidedToDate) {
             changeDay('#date-to-input', -1);
         }
+        syncFromToDates('#date-from-input', '#date-to-input', decidedFromDate);
     });
     $(document).on('rotateClockwise', function() {
         if (!decidedFromDate) {
@@ -253,7 +259,9 @@ $(document).ready(function() {
         } else if (!decidedToDate) {
             changeDay('#date-to-input', 1);
         }
+        syncFromToDates('#date-from-input', '#date-to-input', decidedFromDate);
     });
+    // Main application logic events
     $(document).on('centerWheelPress', function(e, value) {
         if (!decidedFromDate) {
             decidedFromDate = true;
@@ -276,5 +284,20 @@ $(document).ready(function() {
             $('#wheel-submit').prop('disabled', false);
             $('#wheel-submit').text('SUBMIT');
         }
+        updateInputFieldFocus();
     });
+    
+    function updateInputFieldFocus(){
+        $('#date-from-input').css('font-weight', 'normal');
+        $('#date-to-input').css('font-weight', 'normal');
+        $('#interest-input').css('font-weight', 'normal');
+        
+        if(!decidedFromDate){
+            $('#date-from-input').css('font-weight', 'bold');
+        } else if(!decidedToDate) {
+            $('#date-to-input').css('font-weight', 'bold');
+        } else {
+            $('#interest-input').css('font-weight', 'bold');
+        }
+    }
 });

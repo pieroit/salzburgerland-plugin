@@ -112,3 +112,23 @@ function deleteDuplicates(list){
     return cleanList;
 }
 
+// Sync dates so arriving date is always >= than departing date
+// *departing* param is true when last modified date is the departing date.
+function syncFromToDates(selectorFrom, selectorTo, departing){
+    var from = $(selectorFrom).val();
+    from = convertNormalDateToUnix(from);
+    
+    var to = $(selectorTo).val();
+    to = convertNormalDateToUnix(to);
+    
+    var dayDifference = (from - to)/86400000;
+    console.log(departing, from, to, dayDifference);
+    
+    if(!departing && from > to){
+        changeDay(selectorTo, dayDifference);
+    }
+    if(departing && from > to){
+        changeDay(selectorFrom, -dayDifference);
+    }
+}
+
