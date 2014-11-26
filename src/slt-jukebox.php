@@ -19,4 +19,4 @@ require_once( 'admin/saju_admin.php' );
 require_once( 'modules/jukebox/saju_jukebox.php' );
 
 // Load shortcodes
-require_once( 'shortcodes/jukebox-wheel/salu_shortcode_jukebox_wheel.php' );
+require_once( 'shortcodes/jukebox-wheel/saju_shortcode_jukebox_wheel.php' );

@@ -178,30 +178,44 @@ $(document).ready(function() {
     }
 
     /////////////////////////////////////////
-
     // Execution starts here
+
+    // Prepare forms
+    var date = new Date();
+    date = convertUnixDateToNormal(date.getTime());
+    $('#date-from-input').val(date);
+    $('#date-to-input').val(date);
+    // Add two days 
+    changeDay('#date-to-input', 2);
+    
+    $('#wheel-submit').prop('disabled', true);
+    
+    // App logic variables
+    var decidedFromDate = false;
+    var decidedToDate = false;
+
+    // Wheel data
     var interests = ['biking', 'nature', 'eating', 'climbing', 'snowing', 'dancing'];
     var dates = [];
     for (var i = 0; i < 20; i++) {
         dates.push('');
     }
-
-    // Build initial wheel   
     var data = dates;
-    var date = new Date();
-    $('#date-from-input').val(date.getDate());
-    $('#date-to-input').val(date.getDate() + 3);
-    var decidedFromDate = false;
-    var decidedToDate = false;
+    
+    // Build wheel!
     buildWheel('#wheel');
 
     // Tab switching events
     Hammer($('#select-interest-tab')[0]).on('tap', function() {
         data = interests;
+        decidedFromDate = true;
+        decidedToDate = true;
         buildWheel('#wheel');
     });
     Hammer($('#select-date-tab')[0]).on('tap', function() {
         data = dates;
+        decidedFromDate = false;
+        decidedToDate = false;
         buildWheel('#wheel');
     });
 
@@ -209,24 +223,35 @@ $(document).ready(function() {
         decidedFromDate = false;
         decidedToDate = false;
     });
+    
+    Hammer($('#date-to-input')[0]).on('tap', function() {
+        decidedFromDate = true;
+        decidedToDate = false;
+    });
+    
+    // Final submission
+    Hammer($('#wheel-submit')[0]).on('tap', function() {
+        var fromDate = $('#date-from-input').val();
+        fromDate = [ fromDate, convertNormalDateToUnix(fromDate) ];
+        var toDate = $('#date-to-input').val();
+        toDate = [ toDate, convertNormalDateToUnix(toDate) ];
+        var interestsList = ($('#interest-input').val()).split(',');
+        alert(fromDate + '\n' + toDate + '\n' + interestsList);
+    });
 
     // Events fired by the wheel
     $(document).on('rotateAntiClockwise', function() {
         if (!decidedFromDate) {
-            var fromDate = parseInt($('#date-from-input').val(), 10);
-            $('#date-from-input').val(fromDate - 1);
+            changeDay('#date-from-input', -1);
         } else if (!decidedToDate) {
-            var toDate = parseInt($('#date-to-input').val(), 10);
-            $('#date-to-input').val(toDate - 1);
+            changeDay('#date-to-input', -1);
         }
     });
     $(document).on('rotateClockwise', function() {
         if (!decidedFromDate) {
-            var fromDate = parseInt($('#date-from-input').val(), 10);
-            $('#date-from-input').val(fromDate + 1);
+            changeDay('#date-from-input', 1);
         } else if (!decidedToDate) {
-            var toDate = parseInt($('#date-to-input').val(), 10);
-            $('#date-to-input').val(toDate + 1);
+            changeDay('#date-to-input', 1);
         }
     });
     $(document).on('centerWheelPress', function(e, value) {
@@ -239,11 +264,17 @@ $(document).ready(function() {
             buildWheel('#wheel');
             $('a[href="#select-interest"]').tab('show');
         } else {
+            
+            // Update interests list
             var chosenInterests = $('#interest-input').val();
             chosenInterests += value + ',';
             chosenInterests = deleteDuplicates(chosenInterests.split(','));
             chosenInterests = chosenInterests.join(',');
             $('#interest-input').val(chosenInterests);
+            
+            // Activate submission
+            $('#wheel-submit').prop('disabled', false);
+            $('#wheel-submit').text('SUBMIT');
         }
     });
 });

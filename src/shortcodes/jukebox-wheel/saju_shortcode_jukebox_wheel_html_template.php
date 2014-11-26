@@ -34,6 +34,8 @@
     <div class="wheel-container">
         <!-- this svg will contain thw wheel and will expand to the size of the parent div -->
         <svg id="wheel"></svg>
+        
+        <button class="btn-lg" id="wheel-submit">Choose period and interests</button>
     </div>
 
 </div>

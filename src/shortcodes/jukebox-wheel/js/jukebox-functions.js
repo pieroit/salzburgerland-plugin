@@ -82,6 +82,25 @@ function sign(x) {
     return -1;
 }
 
+// Change the date contained in $(selector) by the number of day specified.
+function changeDay(selector, numberOfDays){
+    var date = $(selector).val();
+    date = convertNormalDateToUnix(date);
+    date += numberOfDays * 86400000; // (number of days) * (milliseconds in a day)
+    date = convertUnixDateToNormal(date);
+    $(selector).val(date);
+}
+
+function convertUnixDateToNormal(unixTime){
+    var date = new Date(unixTime);
+    return date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();
+}
+
+// Assumes date string in format "yyyy-mm-dd"
+function convertNormalDateToUnix(date){
+    return (new Date(date)).getTime();
+}
+
 // Delete duplicate elements in an array
 function deleteDuplicates(list){
     var cleanList = [];
