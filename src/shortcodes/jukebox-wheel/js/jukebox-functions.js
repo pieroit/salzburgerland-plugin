@@ -3,10 +3,10 @@ function getEventQuadrant(selector, e) {
     var x = e.center.x;
     var y = e.center.y;
     var svgCenter = {
-        x: $(selector).offset().left + ($(selector).width() / 2),
-        y: $(selector).offset().top + ($(selector).width() / 2)   // It's a square!
+        x: $(selector).offset().left - $(window).scrollLeft() + ($(selector).width() / 2), // Taking into account scrolling
+        y: $(selector).offset().top - $(window).scrollTop()+ ($(selector).width() / 2)   // It's a square!
     };
-
+    
     if (x > svgCenter.x && y < svgCenter.y)
         return 1;
     if (x > svgCenter.x && y > svgCenter.y)
